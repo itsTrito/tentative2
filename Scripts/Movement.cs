@@ -8,13 +8,15 @@ public class Movement : MonoBehaviour
     private SpriteRenderer sr;
     private Animator an;
     [SerializeField]
-    private Character player;
+    private Character character;
     private float ms;
-
+    public float dashForce = 8f;
+    public float dashCost = 5f;
     private Vector2 _movement;
+
     void Awake()
     {
-        ms = player.moveSpeed;
+        ms = character.moveSpeed;
         rb = GetComponent<Rigidbody2D>();
         sr = GetComponent<SpriteRenderer>();
         an = GetComponent<Animator>();
@@ -22,6 +24,7 @@ public class Movement : MonoBehaviour
 
     void Update()
     {
+        Dash();
         _movement.x = Input.GetAxisRaw("Horizontal");
         _movement.y = Input.GetAxisRaw("Vertical");
 
@@ -29,6 +32,7 @@ public class Movement : MonoBehaviour
         an.SetFloat("Vertical", _movement.y);
         an.SetFloat("Speed", _movement.magnitude);
     }
+
     void FixedUpdate()
     {
         rb.MovePosition(rb.position + _movement * ms * Time.deltaTime);
@@ -41,4 +45,18 @@ public class Movement : MonoBehaviour
             sr.flipX = false;
         }
     }
+
+	void Dash()
+	{
+		if(Input.GetButtonDown("Jump")){
+            if (character.stamina > 0){
+                rb.position += _movement *  dashForce;
+                character.stamina -= dashCost;
+                Debug.Log(character.stamina);
+            }
+            else{
+                Debug.Log("No Stamina");
+            }
+		}		
+	}
 }
