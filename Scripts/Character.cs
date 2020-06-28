@@ -7,8 +7,12 @@ public class Character : MonoBehaviour
 {
     public float health = 20f;
     public float stamina = 20f;
+    public float maxStamina = 20f;
     public float moveSpeed = 5f;
     
+    /* public void Regen(float coolDown, float regeneration){
+
+    } */
     public void SetHealth(float newHealth){
         this.health = newHealth;
     }

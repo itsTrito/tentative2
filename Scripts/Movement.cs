@@ -7,8 +7,8 @@ public class Movement : MonoBehaviour
     private Rigidbody2D rb;
     private SpriteRenderer sr;
     private Animator an;
-    [SerializeField]
-    private Character character;
+    //[SerializeField]
+    public Character character;
     private float ms;
     public float dashForce = 8f;
     public float dashCost = 5f;
@@ -36,27 +36,28 @@ public class Movement : MonoBehaviour
     void FixedUpdate()
     {
         rb.MovePosition(rb.position + _movement * ms * Time.deltaTime);
-        if (_movement.x < 0)
-        {
+        if (_movement.x > 0)
             sr.flipX = true;
-        }
         else
-        {
             sr.flipX = false;
-        }
     }
 
 	void Dash()
 	{
 		if(Input.GetButtonDown("Jump")){
-            if (character.stamina > 0){
-                rb.position += _movement *  dashForce;
+            if (character.stamina > dashCost){
+                rb.position += _movement * dashForce;
                 character.stamina -= dashCost;
-                Debug.Log(character.stamina);
             }
             else{
                 Debug.Log("No Stamina");
             }
-		}		
-	}
+		}
+        if(character.stamina > character.maxStamina - 0.02f){
+            character.stamina += (character.maxStamina - character.stamina);
+        }
+        else if(character.stamina < character.maxStamina){
+            character.stamina += 0.02f;
+        }
+    }
 }

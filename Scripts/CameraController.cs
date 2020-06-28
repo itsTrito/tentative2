@@ -3,17 +3,15 @@
 public class CameraController : MonoBehaviour
 {
     public GameObject player;
-    private Transform _transform;
+    public float timeOffset;
+    public Vector3 posOffset;
+    private Vector3 velocity;
 
-    private void Awake()
-    {
-        _transform = GetComponent<Transform>();
+    void Update(){
+        transform.position = Vector3.SmoothDamp(transform.position, player.transform.position + posOffset, ref velocity, timeOffset);
     }
-
     private void LateUpdate()
     {
-        var position = player.transform.position;
-        _transform.position = position;
-        _transform.Translate(0f,0f,-10f);
+        transform.Translate(0f,0f,-10f);
     }
 }
